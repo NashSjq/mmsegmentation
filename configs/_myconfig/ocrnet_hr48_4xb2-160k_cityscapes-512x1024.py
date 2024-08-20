@@ -1,6 +1,13 @@
-_base_ = '../ocrnet/ocrnet_hr18_4xb2-160k_cityscapes-512x1024.py'
+_base_ = [
+    '../_base_/models/ocrnet_hr18.py', '../_base_/datasets/cityscapes.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+]
+crop_size = (512, 1024)
+data_preprocessor = dict(size=crop_size)
+
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(
+    data_preprocessor=data_preprocessor,
     pretrained='open-mmlab://msra/hrnetv2_w48',
     backbone=dict(
         extra=dict(
